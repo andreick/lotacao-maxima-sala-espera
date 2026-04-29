@@ -9,6 +9,9 @@ const INTEGER_PATTERN = /^-?\d+$/;
 export function parseListaNumeros(input: string): ListaNumerosParseada {
   const tokens = input
     .trim()
+    .replace(/^[^\d]+/, '')
+    .replace(/[^\d]+$/, '')
+    .trim()
     .split(TOKEN_SPLITTER)
     .filter((token) => token.length > 0);
 

@@ -11,8 +11,8 @@
       <form [formGroup]="formulario" (ngSubmit)="onSubmit()" class="formulario">
         <mat-form-field appearance="outline">
           <mat-label>Número de passageiros (N)</mat-label>
-          <input #quantidadeInput matInput type="number" formControlName="quantidadePassageiros" min="1" max="100"
-            step="1" />
+          <input #quantidadeInput matInput type="number" formControlName="quantidadePassageiros"
+            [errorStateMatcher]="errorStateMatcher" min="1" max="100" step="1" />
           @if (deveExibirErro('quantidadePassageiros')) {
           <p class="mensagem-erro" role="alert">
             {{ errosFormulario().quantidadePassageiros }}
@@ -22,13 +22,28 @@
 
         <mat-form-field appearance="outline">
           <mat-label>Entradas (E)</mat-label>
-          <textarea #entradasInput matInput rows="4" formControlName="temposEntrada"
-            placeholder="Ex.: 1, 5, 7 ou 1 5 7"></textarea>
+          <mat-chip-grid #chipGridE aria-label="Entradas">
+            @for (valor of entradas(); track $index) {
+            <mat-chip-row (removed)="removeEntrada($index)">
+              {{ valor }}
+              <button matChipRemove [attr.aria-label]="'Remover entrada ' + valor">
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-chip-row>
+            }
+            <input #entradasChipInput placeholder="Ex.: 1, 5, 7" [matChipInputFor]="chipGridE"
+              [matChipInputSeparatorKeyCodes]="separadorTeclas" (matChipInputTokenEnd)="addEntrada($event)"
+              (paste)="onPasteEntrada($event)" (blur)="onBlurEntrada($event)"
+              (keydown)="onKeydownEntrada($event)" />
+          </mat-chip-grid>
           <mat-hint>
-            Cole ou digite N números. Separe por vírgula, espaço ou por linha.
+            Adicione um número por vez ou cole vários de uma vez.
             Valores detectados: {{ quantidadeEntradasDetectadas() }} de
             {{ formulario.controls.quantidadePassageiros.value ?? 0 }}.
           </mat-hint>
+          @if (erroChipEntrada()) {
+          <p class="mensagem-erro" role="alert">{{ erroChipEntrada() }}</p>
+          }
           @if (deveExibirErro('temposEntrada')) {
           <p class="mensagem-erro" role="alert">
             {{ errosFormulario().temposEntrada }}
@@ -38,13 +53,28 @@
 
         <mat-form-field appearance="outline">
           <mat-label>Saídas (S)</mat-label>
-          <textarea #saidasInput matInput rows="4" formControlName="temposSaida"
-            placeholder="Ex.: 9, 13, 12 ou 9 13 12"></textarea>
+          <mat-chip-grid #chipGridS aria-label="Saídas">
+            @for (valor of saidas(); track $index) {
+            <mat-chip-row (removed)="removeSaida($index)">
+              {{ valor }}
+              <button matChipRemove [attr.aria-label]="'Remover saída ' + valor">
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-chip-row>
+            }
+            <input #saidasChipInput placeholder="Ex.: 9, 13, 12" [matChipInputFor]="chipGridS"
+              [matChipInputSeparatorKeyCodes]="separadorTeclas" (matChipInputTokenEnd)="addSaida($event)"
+              (paste)="onPasteSaida($event)" (blur)="onBlurSaida($event)"
+              (keydown)="onKeydownSaida($event)" />
+          </mat-chip-grid>
           <mat-hint>
-            Cole ou digite N números. Separe por vírgula, espaço ou por linha.
+            Adicione um número por vez ou cole vários de uma vez.
             Valores detectados: {{ quantidadeSaidasDetectadas() }} de
             {{ formulario.controls.quantidadePassageiros.value ?? 0 }}.
           </mat-hint>
+          @if (erroChipSaida()) {
+          <p class="mensagem-erro" role="alert">{{ erroChipSaida() }}</p>
+          }
           @if (deveExibirErro('temposSaida')) {
           <p class="mensagem-erro" role="alert">
             {{ errosFormulario().temposSaida }}

@@ -70,11 +70,19 @@ export default defineConfig({
     // },
   ],
 
-  /* Run your local dev server before starting the tests */
-  webServer: {
-    command:
-      'npm --prefix ../frontend run start -- --host 127.0.0.1 --port 4200 --proxy-config proxy.conf.json',
-    url: 'http://127.0.0.1:4200',
-    reuseExistingServer: false,
-  },
+  /* Run servers before starting the tests */
+  webServer: [
+    {
+      command: 'cd ../backend && ./mvnw spring-boot:run -q',
+      url: 'http://localhost:8080/api-docs',
+      reuseExistingServer: !process.env.CI,
+      timeout: 120_000,
+    },
+    {
+      command:
+        'npm --prefix ../frontend run start -- --host 127.0.0.1 --port 4200 --proxy-config proxy.conf.json',
+      url: 'http://127.0.0.1:4200',
+      reuseExistingServer: !process.env.CI,
+    },
+  ],
 });
