@@ -57,3 +57,7 @@ applyTo: "backend/src/**"
 |`./mvnw test`                      | Run tests.                                    |
 |`./mvnw spring-boot:repackage`     | Package the application as a JAR.             |
 |`./mvnw spring-boot:build-image`   | Package the application as a container image. |
+
+<skill-discovery>
+/spring-boot-rest-api-standards
+</skill-discovery>
