@@ -1,12 +1,12 @@
 <main class="pagina-lotacao">
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>Lotacao maxima na sala de espera</mat-card-title>
-      <mat-card-subtitle>
-        Informe entradas e saídas para descobrir qual foi o maior número de pessoas ao mesmo tempo na sala.
-      </mat-card-subtitle>
-    </mat-card-header>
+  <header class="pagina-cabecalho">
+    <h1 class="cabecalho-titulo">Lotação máxima na sala de espera</h1>
+    <p class="cabecalho-descricao">
+      Informe entradas e saídas para descobrir qual foi o maior número de pessoas ao mesmo tempo na sala.
+    </p>
+  </header>
 
+  <mat-card class="card-formulario">
     <mat-card-content>
       <form [formGroup]="formulario" (ngSubmit)="onSubmit()" class="formulario">
         <mat-form-field appearance="outline">
@@ -36,11 +36,7 @@
               (paste)="onPasteEntrada($event)" (blur)="onBlurEntrada($event)"
               (keydown)="onKeydownEntrada($event)" />
           </mat-chip-grid>
-          <mat-hint>
-            Adicione um número por vez ou cole vários de uma vez.
-            Valores detectados: {{ quantidadeEntradasDetectadas() }} de
-            {{ formulario.controls.quantidadePassageiros.value ?? 0 }}.
-          </mat-hint>
+          <mat-hint>Adicione um por vez ou cole vários. Detectados: {{ quantidadeEntradasDetectadas() }} de {{ formulario.controls.quantidadePassageiros.value ?? 0 }}.</mat-hint>
           @if (erroChipEntrada()) {
           <p class="mensagem-erro" role="alert">{{ erroChipEntrada() }}</p>
           }
@@ -67,11 +63,7 @@
               (paste)="onPasteSaida($event)" (blur)="onBlurSaida($event)"
               (keydown)="onKeydownSaida($event)" />
           </mat-chip-grid>
-          <mat-hint>
-            Adicione um número por vez ou cole vários de uma vez.
-            Valores detectados: {{ quantidadeSaidasDetectadas() }} de
-            {{ formulario.controls.quantidadePassageiros.value ?? 0 }}.
-          </mat-hint>
+          <mat-hint>Adicione um por vez ou cole vários. Detectados: {{ quantidadeSaidasDetectadas() }} de {{ formulario.controls.quantidadePassageiros.value ?? 0 }}.</mat-hint>
           @if (erroChipSaida()) {
           <p class="mensagem-erro" role="alert">{{ erroChipSaida() }}</p>
           }
@@ -100,10 +92,11 @@
 
   <mat-card class="resultado">
     <mat-card-header>
-      <mat-card-title>Resultado</mat-card-title>
+      <h2 mat-card-title>Resultado</h2>
     </mat-card-header>
     <mat-card-content>
       @if (resultado() !== null) {
+      <strong class="resultado-numero" aria-hidden="true">{{ resultado() }}</strong>
       <p class="resultado-principal">Lotação máxima: {{ resultado() }} pessoas</p>
       <p class="resultado-apoio">Maior quantidade de pessoas simultaneamente na sala.</p>
       } @else {
@@ -116,9 +109,9 @@
     </mat-card-content>
   </mat-card>
 
-  <mat-card>
+  <mat-card class="card-explicacao">
     <mat-card-header>
-      <mat-card-title>Explicação</mat-card-title>
+      <h2 mat-card-title>Explicação</h2>
     </mat-card-header>
     <mat-card-content>
       <p>

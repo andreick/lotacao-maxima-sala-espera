@@ -1,55 +1,109 @@
+$font:        'Plus Jakarta Sans', 'Segoe UI', sans-serif;
+$color-text:  #1e293b;
+$color-muted: #64748b;
+$color-blue:  #2563eb;
+$color-error: #dc2626;
+
 :host {
   display: block;
 }
 
 .pagina-lotacao {
-  display: grid;
-  gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
   margin: 0 auto;
-  max-width: 960px;
-  padding: 1rem;
+  max-width: 600px;
+  padding: 2rem 1.25rem 3rem;
+}
+
+.pagina-cabecalho {
+  padding-bottom: 0.25rem;
+}
+
+.cabecalho-titulo {
+  font-family: $font;
+  font-size: clamp(1.25rem, 3vw, 1.6rem);
+  font-weight: 700;
+  color: $color-text;
+  margin: 0 0 0.4rem;
+  line-height: 1.2;
+}
+
+.cabecalho-descricao {
+  font-family: $font;
+  font-size: 0.9rem;
+  color: $color-muted;
+  margin: 0;
+  line-height: 1.5;
 }
 
 .formulario {
-  display: grid;
-  gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding-top: 0.25rem;
 }
 
 mat-form-field {
   width: 100%;
+  font-family: $font;
 }
 
 .acoes {
-  align-items: center;
   display: flex;
+  align-items: center;
   gap: 1rem;
+  padding-top: 0.5rem;
 }
 
 .carregando {
-  align-items: center;
   display: inline-flex;
+  align-items: center;
   gap: 0.5rem;
+  font-size: 0.875rem;
+  color: $color-muted;
 }
 
-.resultado {
-  min-height: 9rem;
+.resultado-numero {
+  font-size: 3rem;
+  font-weight: 700;
+  color: $color-blue;
+  line-height: 1;
+  display: block;
+  margin-bottom: 0.4rem;
 }
 
 .resultado-principal {
-  color: var(--mat-sys-primary);
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin: 0 0 0.25rem;
+  font-size: 0.9rem;
+  color: $color-muted;
+  margin: 0 0 0.4rem;
 }
 
-.resultado-apoio,
-.resultado-vazio {
+.resultado-apoio {
+  font-size: 0.875rem;
+  color: $color-muted;
   margin: 0;
+}
+
+.resultado-vazio {
+  font-size: 0.9rem;
+  color: $color-muted;
+  margin: 0;
+}
+
+.card-explicacao mat-card-content p {
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: $color-muted;
+  margin: 0 0 0.75rem;
+
+  &:last-child { margin-bottom: 0; }
 }
 
 .mensagem-erro,
 .mensagem-erro-geral {
-  color: var(--mat-sys-error);
-  font-size: 0.875rem;
-  margin: 0.5rem 0 0;
+  color: $color-error;
+  font-size: 0.8rem;
+  margin: 0.35rem 0 0;
 }
