@@ -6,11 +6,11 @@ Este documento descreve, em termos técnicos, o algoritmo utilizado para calcula
 ## 2) Descrição do problema em termos computacionais
 
 ### Entradas
-- `N`: número de passageiros, com `1 <= N <= 100`.
-- `E[0..N-1]`: lista de instantes de **entrada** (inteiros, p.ex. `1..1000`).
-- `S[0..N-1]`: lista de instantes de **saída** (inteiros, p.ex. `1..1000`).
+- `quantidadePassageiros`: número de passageiros, com `1 <= quantidadePassageiros <= 100`.
+- `temposEntrada[0..quantidadePassageiros-1]`: lista de instantes de **entrada** (inteiros, p.ex. `1..1000`).
+- `temposSaida[0..quantidadePassageiros-1]`: lista de instantes de **saída** (inteiros, p.ex. `1..1000`).
 
-Cada passageiro `i` ocupa a sala do instante `E[i]` até o instante `S[i]`.
+Cada passageiro `i` ocupa a sala do instante `temposEntrada[i]` até o instante `temposSaida[i]`.
 
 ### Saída
 - Um inteiro `M` representando a **lotação máxima** observada ao longo do tempo.
@@ -21,7 +21,7 @@ Cada passageiro `i` ocupa a sala do instante `E[i]` até o instante `S[i]`.
 Computacionalmente, isso equivale a dizer que, para um mesmo instante `t`, devemos processar **todas as saídas antes** de processar **qualquer entrada**.
 
 ### Observações sobre validação
-A API/UI deve validar consistência básica (por exemplo, `len(E)=len(S)=N` e `E[i] <= S[i]`). O algoritmo assume dados válidos e foca no cálculo da lotação máxima.
+A API/UI deve validar consistência básica (por exemplo, `len(temposEntrada)=len(temposSaida)=quantidadePassageiros` e `temposEntrada[i] <= temposSaida[i]`). O algoritmo assume dados válidos e foca no cálculo da lotação máxima.
 
 ## 3) Abordagem adotada (Sweep Line / eventos)
 
@@ -30,8 +30,8 @@ Transformar cada entrada/saída em um **evento temporal** e “varrer” a linha
 
 ### Representação de eventos
 Para cada passageiro `i`, criamos dois eventos:
-- Evento de entrada: `(tempo = E[i], tipo = ENTRADA, delta = +1)`
-- Evento de saída: `(tempo = S[i], tipo = SAIDA,   delta = -1)`
+- Evento de entrada: `(tempo = temposEntrada[i], tipo = ENTRADA, delta = +1)`
+- Evento de saída: `(tempo = temposSaida[i], tipo = SAIDA,   delta = -1)`
 
 ### Ordenação dos eventos
 Ordenamos os `2N` eventos por:
@@ -43,7 +43,7 @@ Ou seja, para o mesmo `tempo`, aplicamos primeiro `-1` (saídas) e só depois `+
 
 ## 4) Algoritmo (passo a passo)
 
-1. Construir uma lista `eventos` com `2N` eventos (entradas e saídas).
+1. Construir uma lista `eventos` com `2 * quantidadePassageiros` eventos (entradas e saídas).
 2. Ordenar `eventos` por `(tempo, prioridadeTipo)` onde `SAIDA < ENTRADA`.
 3. Inicializar:
    - `ocupacaoAtual = 0`
@@ -55,14 +55,14 @@ Ou seja, para o mesmo `tempo`, aplicamos primeiro `-1` (saídas) e só depois `+
 
 ### Pseudocódigo
 ```text
-entrada: N, E[0..N-1], S[0..N-1]
+entrada: quantidadePassageiros, temposEntrada[0..quantidadePassageiros-1], temposSaida[0..quantidadePassageiros-1]
 
 struct Evento { tempo: int, tipo: {SAIDA, ENTRADA}, delta: int }
 
 eventos = []
-para i em 0..N-1:
-  eventos.add(Evento(E[i], ENTRADA, +1))
-  eventos.add(Evento(S[i], SAIDA,   -1))
+para i em 0..quantidadePassageiros-1:
+  eventos.add(Evento(temposEntrada[i], ENTRADA, +1))
+  eventos.add(Evento(temposSaida[i], SAIDA,   -1))
 
 ordenar eventos por:
   (tempo crescente,
@@ -81,7 +81,7 @@ retornar ocupacaoMaxima
 ## 5) Tratamento explícito do caso “entra no mesmo momento que sai”
 
 O comportamento desejado é:
-- Se existe `S[a] == E[b] == t`, então **no instante `t`** a pessoa `a` deve ser considerada como tendo saído **antes** de `b` entrar.
+- Se existe `temposSaida[a] == temposEntrada[b] == t`, então **no instante `t`** a pessoa `a` deve ser considerada como tendo saído **antes** de `b` entrar.
 
 Na prática, isso é garantido pela ordenação (critério de desempate):
 - Para o mesmo `tempo`, processamos primeiro os eventos de **SAIDA** (delta `-1`) e só depois os de **ENTRADA** (delta `+1`).
@@ -98,11 +98,10 @@ Consequência: não ocorre um “pico artificial” de ocupação em instantes o
 
 **Espaço adicional:** `O(N)` para armazenar a lista de eventos.
 
-> Observação: dado `N <= 100`, qualquer abordagem eficiente é suficiente. Ainda assim, esta solução é a forma clássica, escalável e fácil de auditar.
+> Observação: dado `quantidadePassageiros <= 100`, qualquer abordagem eficiente é suficiente. Ainda assim, esta solução é a forma clássica, escalável e fácil de auditar.
 
 ## 7) Por que essa abordagem foi escolhida
 
 1. **Correção clara e auditável**: o modelo por eventos torna explícita a regra de negócio (empate) via ordenação.
 2. **Implementação simples**: poucas estruturas e lógica linear após ordenação.
 3. **Determinismo**: mesma entrada → mesma sequência de eventos ordenados → mesma saída.
-4. **Facilidade de teste**: cenários de empate (`E == S`) e interleavings complexos são cobertos naturalmente.

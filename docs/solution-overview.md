@@ -10,7 +10,7 @@ Isso reduz risco de subdimensionamento (conforto/segurança/operação) e embasa
 ## 2) Solução proposta
 Entregar uma solução simples e demonstrável, composta por:
 
-- **Interface Web** para inserir conjuntos de dados (N, E, S) e visualizar o resultado.
+- **Interface Web** para inserir conjuntos de dados (`quantidadePassageiros`, `temposEntrada`, `temposSaida`) e visualizar o resultado.
 - **API REST** que recebe os dados, executa o cálculo de lotação máxima e retorna o valor.
 - **Explicação acessível** na interface (para stakeholders) e um **texto técnico** junto ao código (para desenvolvedores).
 
@@ -20,7 +20,7 @@ O cálculo de lotação máxima usa um algoritmo eficiente de varredura temporal
 
 ### Frontend (Angular + Angular Material)
 Responsável por:
-- Coletar os valores **N**, **E** (entradas) e **S** (saídas).
+- Coletar os valores **quantidadePassageiros**, **temposEntrada** (entradas) e **temposSaida** (saídas).
 - Validar o formato (ex.: tamanhos consistentes, valores no intervalo esperado).
 - Acionar a API e exibir:
   - Lotação máxima calculada.
@@ -29,7 +29,7 @@ Responsável por:
 ### Backend API (Spring Boot)
 Responsável por:
 - Expor endpoint REST para cálculo (ex.: `POST /api/.../lotacao-maxima`).
-- Validar entrada (obrigatoriedade de N/E/S, limites, consistência).
+- Validar entrada (obrigatoriedade de `quantidadePassageiros`/`temposEntrada`/`temposSaida`, limites, consistência).
 - Executar o algoritmo e retornar resposta estruturada (JSON) com:
   - `lotacao-maxima` (resultado)
   - (opcional) metadados úteis para UI, como mensagens/observações.
@@ -37,9 +37,9 @@ Responsável por:
 ## 4) Fluxo geral da informação (end-to-end)
 
 1. Usuário informa o conjunto de dados na UI:
-   - **N** = quantidade de passageiros
-   - **E** = lista de instantes de entrada
-   - **S** = lista de instantes de saída
+   - **quantidadePassageiros** = quantidade de passageiros
+   - **temposEntrada** = lista de instantes de entrada
+   - **temposSaida** = lista de instantes de saída
 2. Frontend valida e envia para a API via HTTP `POST`.
 3. Backend valida novamente (segurança/robustez) e transforma os dados em eventos de tempo.
 4. Backend calcula a lotação máxima ao percorrer os eventos ordenados:

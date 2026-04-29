@@ -33,9 +33,9 @@ class LotacaoMaximaControllerIntegrationTest {
 	void deveRetornarMaxOcupacaoQuandoRequisicaoValida() throws Exception {
 		String requestBody = """
 				{
-				  "n": 3,
-				  "e": [1, 5, 7],
-				  "s": [9, 13, 12]
+				  "quantidadePassageiros": 3,
+				  "temposEntrada": [1, 5, 7],
+				  "temposSaida": [9, 13, 12]
 				}
 				""";
 
@@ -50,9 +50,9 @@ class LotacaoMaximaControllerIntegrationTest {
 	void deveRetornarBadRequestQuandoListasNaoTiveremTamanhoN() throws Exception {
 		String requestBody = """
 				{
-				  "n": 3,
-				  "e": [1, 5],
-				  "s": [9, 13, 12]
+				  "quantidadePassageiros": 3,
+				  "temposEntrada": [1, 5],
+				  "temposSaida": [9, 13, 12]
 				}
 				""";
 
@@ -65,16 +65,16 @@ class LotacaoMaximaControllerIntegrationTest {
 				.andExpect(jsonPath("$.detail").value("Dados inválidos"))
 				.andExpect(jsonPath("$.instance").value("/api/lotacao-maxima"))
 				.andExpect(jsonPath("$.timestamp").isNotEmpty())
-				.andExpect(jsonPath("$.details", hasItem("e e s devem ter tamanho n")));
+				.andExpect(jsonPath("$.details", hasItem("temposEntrada e temposSaida devem ter tamanho quantidadePassageiros")));
 	}
 
 	@Test
 	void deveRetornarBadRequestQuandoEntradaForMaiorQueSaida() throws Exception {
 		String requestBody = """
 				{
-				  "n": 1,
-				  "e": [5],
-				  "s": [4]
+				  "quantidadePassageiros": 1,
+				  "temposEntrada": [5],
+				  "temposSaida": [4]
 				}
 				""";
 
@@ -87,6 +87,6 @@ class LotacaoMaximaControllerIntegrationTest {
 				.andExpect(jsonPath("$.detail").value("Dados inválidos"))
 				.andExpect(jsonPath("$.instance").value("/api/lotacao-maxima"))
 				.andExpect(jsonPath("$.timestamp").isNotEmpty())
-				.andExpect(jsonPath("$.details", hasItem("e[0] deve ser menor ou igual a s[0]")));
+				.andExpect(jsonPath("$.details", hasItem("temposEntrada[0] deve ser menor ou igual a temposSaida[0]")));
 	}
 }

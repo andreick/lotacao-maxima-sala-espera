@@ -4,7 +4,7 @@ info:
   version: v1
   description: >-
     API REST para cálculo da lotação máxima simultânea em salas de espera,
-    a partir dos horários de entrada (E) e saída (S) dos passageiros.
+    a partir dos tempos de entrada e saída dos passageiros.
 servers:
   - url: http://localhost:8080
 paths:
@@ -15,7 +15,7 @@ paths:
       operationId: calcularLotacaoMaxima
       summary: Calcula a lotação máxima simultânea
       description: >-
-        Recebe N passageiros e suas listas de entrada (E) e saída (S) e retorna
+        Recebe a quantidade de passageiros e suas listas de tempos de entrada e saída e retorna
         o número máximo de passageiros simultâneos na sala. Se alguém entra no
         mesmo instante em que outro sai, conta apenas 1 pessoa naquele instante.
       requestBody:
@@ -28,15 +28,15 @@ paths:
               exemplo1:
                 summary: Exemplo com lotação máxima 3
                 value:
-                  n: 3
-                  e: [1, 5, 7]
-                  s: [9, 13, 12]
+                  quantidadePassageiros: 3
+                  temposEntrada: [1, 5, 7]
+                  temposSaida: [9, 13, 12]
               exemplo2:
                 summary: Exemplo com lotação máxima 1
                 value:
-                  n: 4
-                  e: [1, 4, 8, 10]
-                  s: [3, 8, 10, 17]
+                  quantidadePassageiros: 4
+                  temposEntrada: [1, 4, 8, 10]
+                  temposSaida: [3, 8, 10, 17]
       responses:
         '200':
           description: Cálculo realizado com sucesso
@@ -49,7 +49,7 @@ paths:
                   value:
                     maxOcupacao: 3
         '400':
-          description: Requisição inválida (validação de N/E/S)
+          description: Requisição inválida (validação do payload)
           content:
             application/json:
               schema:
@@ -64,8 +64,8 @@ paths:
                     instance: "/api/lotacao-maxima"
                     timestamp: "2026-01-15T10:30:00Z"
                     details:
-                      - "n deve estar entre 1 e 100"
-                      - "e e s devem ter tamanho n"
+                      - "quantidadePassageiros deve estar entre 1 e 100"
+                      - "temposEntrada e temposSaida devem ter tamanho quantidadePassageiros"
         '500':
           description: Erro inesperado
           content:
@@ -76,18 +76,18 @@ components:
   schemas:
     LotacaoMaximaRequest:
       type: object
-      required: [n, e, s]
+      required: [quantidadePassageiros, temposEntrada, temposSaida]
       additionalProperties: false
       properties:
-        n:
+        quantidadePassageiros:
           type: integer
           minimum: 1
           maximum: 100
           description: Quantidade de passageiros
           example: 3
-        e:
+        temposEntrada:
           type: array
-          description: Lista de momentos de entrada (tamanho n)
+          description: Lista de momentos de entrada (tamanho quantidadePassageiros)
           minItems: 1
           maxItems: 100
           items:
@@ -95,9 +95,9 @@ components:
             minimum: 1
             maximum: 1000
           example: [1, 5, 7]
-        s:
+        temposSaida:
           type: array
-          description: Lista de momentos de saída (tamanho n)
+          description: Lista de momentos de saída (tamanho quantidadePassageiros)
           minItems: 1
           maxItems: 100
           items:
@@ -153,4 +153,4 @@ components:
           items:
             type: string
           example:
-            - "e e s devem ter tamanho n"
+            - "temposEntrada e temposSaida devem ter tamanho quantidadePassageiros"

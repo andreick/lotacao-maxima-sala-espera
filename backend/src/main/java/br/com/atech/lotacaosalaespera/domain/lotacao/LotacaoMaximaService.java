@@ -15,20 +15,21 @@ public class LotacaoMaximaService {
 
 	public int calcular(LotacaoMaximaRequest request) {
 		validarConsistencia(request);
-		return lotacaoMaximaCalculator.calcular(request.e(), request.s());
+		return lotacaoMaximaCalculator.calcular(request.temposEntrada(), request.temposSaida());
 	}
 
 	private void validarConsistencia(LotacaoMaximaRequest request) {
 		List<String> erros = new ArrayList<>();
 
-		if (request.e().size() != request.n() || request.s().size() != request.n()) {
-			erros.add("e e s devem ter tamanho n");
+		if (request.temposEntrada().size() != request.quantidadePassageiros()
+				|| request.temposSaida().size() != request.quantidadePassageiros()) {
+			erros.add("temposEntrada e temposSaida devem ter tamanho quantidadePassageiros");
 		}
 
-		int limite = Math.min(request.e().size(), request.s().size());
+		int limite = Math.min(request.temposEntrada().size(), request.temposSaida().size());
 		for (int i = 0; i < limite; i++) {
-			if (request.e().get(i) > request.s().get(i)) {
-				erros.add(String.format("e[%d] deve ser menor ou igual a s[%d]", i, i));
+			if (request.temposEntrada().get(i) > request.temposSaida().get(i)) {
+				erros.add(String.format("temposEntrada[%d] deve ser menor ou igual a temposSaida[%d]", i, i));
 			}
 		}
 

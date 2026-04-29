@@ -1,6 +1,6 @@
 # Arquitetura do Sistema
 
-Este documento descreve a **arquitetura proposta** para a solução de cálculo da **lotação máxima** de uma sala de espera, baseada nos dados (N, E, S) informados na interface.
+Este documento descreve a **arquitetura proposta** para a solução de cálculo da **lotação máxima** de uma sala de espera, baseada nos dados (`quantidadePassageiros`, `temposEntrada`, `temposSaida`) informados na interface.
 
 > Objetivo arquitetural: separar bem **experiência (Frontend)** de **cálculo (Backend)**, mantendo o sistema simples (sem overengineering) para um problema pequeno e determinístico.
 
@@ -17,7 +17,7 @@ Este documento descreve a **arquitetura proposta** para a solução de cálculo 
 - **Java 25**
 - **Spring Boot 4**
 
-**Papel**: expor uma API REST para receber N/E/S, validar regras e executar o algoritmo (sweep line), retornando o valor da lotação máxima.
+**Papel**: expor uma API REST para receber `quantidadePassageiros`, `temposEntrada` e `temposSaida`, validar regras e executar o algoritmo (sweep line), retornando o valor da lotação máxima.
 
 > Observação: o escopo atual **não exige** banco de dados, mensageria ou cache. O cálculo é rápido, idempotente e feito “on demand”.
 
@@ -34,10 +34,10 @@ flowchart LR
 ### Responsabilidades por container
 
 **Browser (UI Web)**
-- Entrada de dados: N, lista E (entradas) e lista S (saídas).
+- Entrada de dados: `quantidadePassageiros`, lista `temposEntrada` (entradas) e lista `temposSaida` (saídas).
 - Validações de UX (antes de chamar a API):
   - campos obrigatórios presentes
-  - tamanhos de E e S compatíveis com N
+  - tamanhos de `temposEntrada` e `temposSaida` compatíveis com `quantidadePassageiros`
   - valores numéricos no intervalo esperado (ex.: 1..1000)
 - Apresentação:
   - exibir a lotação máxima
@@ -45,8 +45,8 @@ flowchart LR
 
 **API REST (Java)**
 - Validar entrada de forma **defensiva** (não confiar na UI):
-  - N dentro do limite
-  - E e S com tamanho N
+  - `quantidadePassageiros` dentro do limite
+  - `temposEntrada` e `temposSaida` com tamanho de `quantidadePassageiros`
   - instantes coerentes (ex.: entrada <= saída)
 - Executar o algoritmo de cálculo respeitando a regra de negócio:
   - **se alguém entra no mesmo instante que outro sai, a saída conta primeiro** (não aumenta a lotação naquele instante)
@@ -56,15 +56,15 @@ flowchart LR
 
 ### Estilo de integração
 - **HTTP/HTTPS** com **JSON**.
-- 1 chamada principal (por dataset): a UI envia (N, E, S) e recebe o resultado.
+- 1 chamada principal (por dataset): a UI envia (`quantidadePassageiros`, `temposEntrada`, `temposSaida`) e recebe o resultado.
 
 ### Contrato de dados (conceitual)
 **Request**
 ```json
 {
-  "n": 3,
-  "e": [1, 5, 7],
-  "s": [9, 13, 12]
+  "quantidadePassageiros": 3,
+  "temposEntrada": [1, 5, 7],
+  "temposSaida": [9, 13, 12]
 }
 ```
 
@@ -119,7 +119,7 @@ flowchart TB
 - Mantêm o contrato estável para a UI.
 
 **Validação (regras e consistência)**
-- Confere limites e consistência (N vs tamanhos, valores válidos, entrada/saída coerentes).
+- Confere limites e consistência (`quantidadePassageiros` vs tamanhos, valores válidos, entrada/saída coerentes).
 - Produz erros compreensíveis (úteis para UI e para suporte).
 
 **Application Service (caso de uso)**
