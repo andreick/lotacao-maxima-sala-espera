@@ -1,3 +1,9 @@
+spring:
+  application:
+    name: lotacao-maxima-sala-espera
+  web:
+    locale: pt_BR
+
 springdoc:
   api-docs:
     path: /api-docs
