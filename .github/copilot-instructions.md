@@ -1,4 +1,4 @@
-<project-description>
+<project-overview>
 ## Contexto
 
 O cliente da Atech solicitou uma avaliação da capacidade necessária de um aeroporto para que atenda na sala de espera todos os passageiros até que os mesmos tomem o seu voo. Isso porque o mal dimensionamento já trouxe transtornos operacionais e o cliente está fazendo um estudo de redimensionamento das salas de espera.
@@ -27,7 +27,7 @@ Seja **N = 4**, **E = [1,4,8,10]** e **S = [3,8,10,17]**, sabemos que o número 
 2. Disponibilizar na interface uma explicação da solução do problema para pessoas leigas, ou seja, uma explicação cujo formato seja pensado para a leitura do cliente que iremos apresentar a solução, não da equipe técnica.
 3. Criar uma API REST que receba os dados e retorne a solução. Note que deverão ser recebidos obrigatoriamente os valores N, E e S conforme a descrição do problema técnico.
 4. Escrever um texto explicativo do algoritmo em forma técnica, cujo formato seja pensado para a leitura de uma equipe técnica de desenvolvedores, a ser disponibilizada junto ao código.
-</project-description>
+</project-overviews>
 
 <project-stack>
 ## Backend
@@ -39,3 +39,7 @@ Seja **N = 4**, **E = [1,4,8,10]** e **S = [3,8,10,17]**, sabemos que o número 
 - Framework: Angular 21.2.8
 - Biblioteca de componentes: Angular Material
 </project-stack>
+
+<project-documentation>
+`docs/solution-overview.md` - Leitura obrigatória para entender a solução proposta em alto nível, com foco na visão geral e no fluxo de informação entre os componentes.
+</project-documentation>
