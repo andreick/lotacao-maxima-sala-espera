@@ -1,12 +1,11 @@
-package br.com.atech.lotacaosalaespera.lotacao.controller;
+package br.com.atech.lotacaosalaespera.domain.lotacao;
 
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import br.com.atech.lotacaosalaespera.lotacao.error.ApiExceptionHandler;
-import br.com.atech.lotacaosalaespera.lotacao.service.LotacaoMaximaService;
+import br.com.atech.lotacaosalaespera.shared.exception.ApiExceptionHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -24,7 +23,7 @@ class LotacaoMaximaControllerIntegrationTest {
 		validator.afterPropertiesSet();
 
 		mockMvc = MockMvcBuilders
-				.standaloneSetup(new LotacaoMaximaController(new LotacaoMaximaService()))
+				.standaloneSetup(new LotacaoMaximaController(new LotacaoMaximaService(new LotacaoMaximaCalculator())))
 				.setControllerAdvice(new ApiExceptionHandler())
 				.setValidator(validator)
 				.build();

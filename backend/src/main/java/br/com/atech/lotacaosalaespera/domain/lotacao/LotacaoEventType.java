@@ -1,4 +1,4 @@
-package br.com.atech.lotacaosalaespera.lotacao.domain;
+package br.com.atech.lotacaosalaespera.domain.lotacao;
 
 enum LotacaoEventType {
 	SAIDA(0, -1),

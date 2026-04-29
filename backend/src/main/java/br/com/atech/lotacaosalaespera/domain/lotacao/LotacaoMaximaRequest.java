@@ -1,4 +1,4 @@
-package br.com.atech.lotacaosalaespera.lotacao.dto;
+package br.com.atech.lotacaosalaespera.domain.lotacao;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;

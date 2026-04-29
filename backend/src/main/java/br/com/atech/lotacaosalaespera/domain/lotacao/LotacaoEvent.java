@@ -1,4 +1,4 @@
-package br.com.atech.lotacaosalaespera.lotacao.domain;
+package br.com.atech.lotacaosalaespera.domain.lotacao;
 
 record LotacaoEvent(int tempo, LotacaoEventType tipo) {
 }

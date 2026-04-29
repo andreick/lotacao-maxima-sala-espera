@@ -1,8 +1,5 @@
-package br.com.atech.lotacaosalaespera.lotacao.controller;
+package br.com.atech.lotacaosalaespera.domain.lotacao;
 
-import br.com.atech.lotacaosalaespera.lotacao.dto.LotacaoMaximaRequest;
-import br.com.atech.lotacaosalaespera.lotacao.dto.LotacaoMaximaResponse;
-import br.com.atech.lotacaosalaespera.lotacao.service.LotacaoMaximaService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

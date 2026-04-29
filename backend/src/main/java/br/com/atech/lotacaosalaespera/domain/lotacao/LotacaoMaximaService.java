@@ -1,8 +1,5 @@
-package br.com.atech.lotacaosalaespera.lotacao.service;
+package br.com.atech.lotacaosalaespera.domain.lotacao;
 
-import br.com.atech.lotacaosalaespera.lotacao.domain.LotacaoMaximaCalculator;
-import br.com.atech.lotacaosalaespera.lotacao.dto.LotacaoMaximaRequest;
-import br.com.atech.lotacaosalaespera.lotacao.error.InvalidLotacaoRequestException;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -10,9 +7,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class LotacaoMaximaService {
 
+	private final LotacaoMaximaCalculator lotacaoMaximaCalculator;
+
+	public LotacaoMaximaService(LotacaoMaximaCalculator lotacaoMaximaCalculator) {
+		this.lotacaoMaximaCalculator = lotacaoMaximaCalculator;
+	}
+
 	public int calcular(LotacaoMaximaRequest request) {
 		validarConsistencia(request);
-		return LotacaoMaximaCalculator.calcular(request.e(), request.s());
+		return lotacaoMaximaCalculator.calcular(request.e(), request.s());
 	}
 
 	private void validarConsistencia(LotacaoMaximaRequest request) {

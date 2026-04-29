@@ -1,4 +1,4 @@
-package br.com.atech.lotacaosalaespera.lotacao.error;
+package br.com.atech.lotacaosalaespera.shared.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
 import java.net.URI;
@@ -29,9 +29,9 @@ public class ApiExceptionHandler {
 		return buildError(HttpStatus.BAD_REQUEST, "Dados inválidos", request, details);
 	}
 
-	@ExceptionHandler(InvalidLotacaoRequestException.class)
-	public ResponseEntity<ProblemDetail> handleInvalidLotacaoRequest(
-			InvalidLotacaoRequestException exception,
+	@ExceptionHandler(DomainException.class)
+	public ResponseEntity<ProblemDetail> handleDomainException(
+			DomainException exception,
 			HttpServletRequest request
 	) {
 		return buildError(HttpStatus.BAD_REQUEST, exception.getMessage(), request, exception.getDetails());
