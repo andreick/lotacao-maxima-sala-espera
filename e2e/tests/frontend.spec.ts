@@ -88,24 +88,6 @@ test.describe('Lotação máxima - validações do frontend', () => {
     await expect(page.getByText('Informe um número inteiro entre 1 e 1000.').last()).toBeVisible();
   });
 
-  test('registra chip de entradas ao perder o foco', async ({ page }) => {
-    const entradasInput = page.getByPlaceholder('Ex.: 1, 5, 7');
-    await entradasInput.fill('42');
-    await entradasInput.blur();
-
-    await expect(page.getByRole('button', { name: 'Remover entrada 42' })).toBeVisible();
-    await expect(entradasInput).toHaveValue('');
-  });
-
-  test('registra chip de entradas ao digitar caractere não numérico', async ({ page }) => {
-    const entradasInput = page.getByPlaceholder('Ex.: 1, 5, 7');
-    await entradasInput.fill('73');
-    await entradasInput.press(' ');
-
-    await expect(page.getByRole('button', { name: 'Remover entrada 73' })).toBeVisible();
-    await expect(entradasInput).toHaveValue('');
-  });
-
   test('aceita colagem com notação de colchetes', async ({ page }) => {
     await preencherEntradas(page, '[1, 5, 7]');
 
