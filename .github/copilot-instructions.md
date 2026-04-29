@@ -43,4 +43,5 @@ Seja **N = 4**, **E = [1,4,8,10]** e **S = [3,8,10,17]**, sabemos que o número 
 <project-documentation>
 `docs/solution-overview.md` - Leitura obrigatória para entender a solução proposta em alto nível, com foco na visão geral e no fluxo de informação entre os componentes.
 `docs/system-architecture.md` - Leitura obrigatória para entender a arquitetura do sistema, os containers envolvidos e a comunicação entre eles.
+`docs/algorithm-design.md` - Leitura obrigatória para entender o algoritmo utilizado para calcular a lotação máxima, incluindo detalhes técnicos e justificativas de design.
 </project-documentation>
