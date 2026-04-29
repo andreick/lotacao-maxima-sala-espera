@@ -60,4 +60,5 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 
 <skill-discovery>
 /angular-developer
+/playwright-cli
 </skill-discovery>
