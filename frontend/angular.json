@@ -64,7 +64,8 @@
               "buildTarget": "lotacao-sala-espera-web:build:production"
             },
             "development": {
-              "buildTarget": "lotacao-sala-espera-web:build:development"
+              "buildTarget": "lotacao-sala-espera-web:build:development",
+              "proxyConfig": "proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"

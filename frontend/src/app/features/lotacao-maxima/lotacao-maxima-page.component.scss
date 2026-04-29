@@ -1,0 +1,55 @@
+:host {
+  display: block;
+}
+
+.pagina-lotacao {
+  display: grid;
+  gap: 1rem;
+  margin: 0 auto;
+  max-width: 960px;
+  padding: 1rem;
+}
+
+.formulario {
+  display: grid;
+  gap: 1rem;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.acoes {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+}
+
+.carregando {
+  align-items: center;
+  display: inline-flex;
+  gap: 0.5rem;
+}
+
+.resultado {
+  min-height: 9rem;
+}
+
+.resultado-principal {
+  color: var(--mat-sys-primary);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem;
+}
+
+.resultado-apoio,
+.resultado-vazio {
+  margin: 0;
+}
+
+.mensagem-erro,
+.mensagem-erro-geral {
+  color: var(--mat-sys-error);
+  font-size: 0.875rem;
+  margin: 0.5rem 0 0;
+}

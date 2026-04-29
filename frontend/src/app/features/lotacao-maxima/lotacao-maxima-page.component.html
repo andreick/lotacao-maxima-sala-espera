@@ -1,0 +1,112 @@
+<main class="pagina-lotacao">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Lotacao maxima na sala de espera</mat-card-title>
+      <mat-card-subtitle>
+        Informe entradas e saídas para descobrir qual foi o maior número de pessoas ao mesmo tempo na sala.
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="formulario" (ngSubmit)="onSubmit()" class="formulario">
+        <mat-form-field appearance="outline">
+          <mat-label>Número de passageiros (N)</mat-label>
+          <input #quantidadeInput matInput type="number" formControlName="quantidadePassageiros" min="1" max="100"
+            step="1" />
+          @if (deveExibirErro('quantidadePassageiros')) {
+          <p class="mensagem-erro" role="alert">
+            {{ errosFormulario().quantidadePassageiros }}
+          </p>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Entradas (E)</mat-label>
+          <textarea #entradasInput matInput rows="4" formControlName="temposEntrada"
+            placeholder="Ex.: 1, 5, 7 ou 1 5 7"></textarea>
+          <mat-hint>
+            Cole ou digite N números. Separe por vírgula, espaço ou por linha.
+            Valores detectados: {{ quantidadeEntradasDetectadas() }} de
+            {{ formulario.controls.quantidadePassageiros.value ?? 0 }}.
+          </mat-hint>
+          @if (deveExibirErro('temposEntrada')) {
+          <p class="mensagem-erro" role="alert">
+            {{ errosFormulario().temposEntrada }}
+          </p>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Saídas (S)</mat-label>
+          <textarea #saidasInput matInput rows="4" formControlName="temposSaida"
+            placeholder="Ex.: 9, 13, 12 ou 9 13 12"></textarea>
+          <mat-hint>
+            Cole ou digite N números. Separe por vírgula, espaço ou por linha.
+            Valores detectados: {{ quantidadeSaidasDetectadas() }} de
+            {{ formulario.controls.quantidadePassageiros.value ?? 0 }}.
+          </mat-hint>
+          @if (deveExibirErro('temposSaida')) {
+          <p class="mensagem-erro" role="alert">
+            {{ errosFormulario().temposSaida }}
+          </p>
+          }
+        </mat-form-field>
+
+        <div class="acoes">
+          <button matButton="filled" type="submit" [disabled]="carregando()">
+            Calcular lotação máxima
+          </button>
+
+          @if (carregando()) {
+          <span class="carregando" role="status" aria-live="polite">
+            <mat-spinner diameter="20" />
+            Calculando...
+          </span>
+          }
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="resultado">
+    <mat-card-header>
+      <mat-card-title>Resultado</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      @if (resultado() !== null) {
+      <p class="resultado-principal">Lotação máxima: {{ resultado() }} pessoas</p>
+      <p class="resultado-apoio">Maior quantidade de pessoas simultaneamente na sala.</p>
+      } @else {
+      <p class="resultado-vazio">Preencha os dados e clique em “Calcular lotação máxima”.</p>
+      }
+
+      @if (erroApi()) {
+      <p class="mensagem-erro-geral" role="alert">{{ erroApi() }}</p>
+      }
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Explicação</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>
+        “Lotação máxima” é o maior número de pessoas que ficaram ao mesmo tempo dentro da sala em
+        algum momento do período analisado.
+      </p>
+      <p>
+        O cálculo observa entradas e saídas ao longo do tempo. Quando alguém entra, a sala ganha
+        uma pessoa; quando alguém sai, a sala perde uma pessoa.
+      </p>
+      <p>
+        Regra importante: se uma pessoa sai exatamente no mesmo momento em que outra entra, isso
+        não aumenta a lotação naquele instante.
+      </p>
+      <p>
+        Esse número ajuda a definir a capacidade mínima necessária para acomodar todos com conforto
+        e segurança no pior momento observado.
+      </p>
+    </mat-card-content>
+  </mat-card>
+</main>
