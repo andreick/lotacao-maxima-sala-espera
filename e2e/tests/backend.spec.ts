@@ -1,6 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 
-const dispatchPaste = async (page: Page, locator: ReturnType<Page['getByPlaceholder']>, texto: string) => {
+const dispatchPaste = async (page: Page, testid: string, texto: string) => {
+  const locator = page.getByTestId(testid + '-input');
   await locator.click();
   await locator.evaluate((el, text) => {
     const event = new ClipboardEvent('paste', { bubbles: true, cancelable: true });
@@ -12,8 +13,8 @@ const dispatchPaste = async (page: Page, locator: ReturnType<Page['getByPlacehol
 const calcularLotacao = async (page: Page, n: string, entradas: string, saidas: string) => {
   await page.goto('/');
   await page.getByLabel('Número de passageiros (N)').fill(n);
-  await dispatchPaste(page, page.getByPlaceholder('Ex.: 1, 5, 7'), entradas);
-  await dispatchPaste(page, page.getByPlaceholder('Ex.: 9, 13, 12'), saidas);
+  await dispatchPaste(page, 'chip-input-entradas', entradas);
+  await dispatchPaste(page, 'chip-input-saidas', saidas);
   await page.getByRole('button', { name: 'Calcular lotação máxima' }).click();
 };
 

@@ -1,6 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 
-const dispatchPaste = async (page: Page, locator: ReturnType<Page['getByPlaceholder']>, texto: string) => {
+const dispatchPaste = async (page: Page, testid: string, texto: string) => {
+  const locator = page.getByTestId(testid + '-input');
   await locator.click();
   await locator.evaluate((el, text) => {
     const event = new ClipboardEvent('paste', { bubbles: true, cancelable: true });
@@ -10,17 +11,17 @@ const dispatchPaste = async (page: Page, locator: ReturnType<Page['getByPlacehol
 };
 
 const preencherEntradas = async (page: Page, texto: string) => {
-  await dispatchPaste(page, page.getByPlaceholder('Ex.: 1, 5, 7'), texto);
+  await dispatchPaste(page, 'chip-input-entradas', texto);
 };
 
 const preencherSaidas = async (page: Page, texto: string) => {
-  await dispatchPaste(page, page.getByPlaceholder('Ex.: 9, 13, 12'), texto);
+  await dispatchPaste(page, 'chip-input-saidas', texto);
 };
 
 const preencherFormulario = async (page: Page, quantidade: string, entradas: string, saidas: string) => {
   await page.getByLabel('Número de passageiros (N)').fill(quantidade);
-  await preencherEntradas(page, entradas);
-  await preencherSaidas(page, saidas);
+  await dispatchPaste(page, 'chip-input-entradas', entradas);
+  await dispatchPaste(page, 'chip-input-saidas', saidas);
 };
 
 test.describe('Lotação máxima - validações do frontend', () => {
@@ -61,13 +62,14 @@ test.describe('Lotação máxima - validações do frontend', () => {
   });
 
   test('rejeita chip com valor não inteiro imediatamente', async ({ page }) => {
-    const entradasInput = page.getByPlaceholder('Ex.: 1, 5, 7');
+    await page.goto('/');
+    const entradasInput = page.getByTestId('chip-input-entradas-input');
     await entradasInput.fill('abc');
     await entradasInput.press('Enter');
 
     await expect(page.getByText('Informe um número inteiro entre 1 e 1000.').first()).toBeVisible();
 
-    const saidasInput = page.getByPlaceholder('Ex.: 9, 13, 12');
+    const saidasInput = page.getByTestId('chip-input-saidas-input');
     await saidasInput.fill('4.5');
     await saidasInput.press('Enter');
 
@@ -75,13 +77,14 @@ test.describe('Lotação máxima - validações do frontend', () => {
   });
 
   test('rejeita chip com valor fora do intervalo 1 a 1000 imediatamente', async ({ page }) => {
-    const entradasInput = page.getByPlaceholder('Ex.: 1, 5, 7');
+    await page.goto('/');
+    const entradasInput = page.getByTestId('chip-input-entradas-input');
     await entradasInput.fill('0');
     await entradasInput.press('Enter');
 
     await expect(page.getByText('Informe um número inteiro entre 1 e 1000.').first()).toBeVisible();
 
-    const saidasInput = page.getByPlaceholder('Ex.: 9, 13, 12');
+    const saidasInput = page.getByTestId('chip-input-saidas-input');
     await saidasInput.fill('1001');
     await saidasInput.press('Enter');
 
@@ -91,9 +94,9 @@ test.describe('Lotação máxima - validações do frontend', () => {
   test('aceita colagem com notação de colchetes', async ({ page }) => {
     await preencherEntradas(page, '[1, 5, 7]');
 
-    await expect(page.getByRole('button', { name: 'Remover entrada 1' })).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Remover entrada 5' })).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Remover entrada 7' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Remover Entradas (E) 1' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Remover Entradas (E) 5' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Remover Entradas (E) 7' })).toBeVisible();
   });
 
   test('valida quantidade de valores em E e S igual a N', async ({ page }) => {
