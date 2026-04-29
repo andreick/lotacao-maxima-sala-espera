@@ -25,7 +25,7 @@ A interface foi pensada para um público leigo, com foco em clareza e objetivida
    - Campo **N**
    - Campo **E** (lista)
    - Campo **S** (lista)
-   - Ajuda rápida abaixo de E e S: “Cole ou digite N números. Separe por vírgula, espaço ou por linha (ex.: `1, 5, 7` ou `1 5 7` ou `1↵5↵7`).”
+   - Ajuda rápida abaixo de E e S: “Adicione um número por vez ou cole vários de uma vez.”
    - Feedback logo abaixo do campo: “Valores detectados: X de N”.
 4. **Botão principal**
    - “Calcular lotação máxima”
@@ -39,13 +39,16 @@ A interface foi pensada para um público leigo, com foco em clareza e objetivida
 ## Comportamento e validações (mensagens amigáveis)
 - **Obrigatoriedade:** N, E e S são necessários para calcular.
 - **Consistência de quantidade:** E e S devem ter exatamente **N** valores.
-- **Valores inválidos:** aceitar apenas números inteiros.
-- **Separadores flexíveis:** permitir vírgula, espaço e quebra de linha (facilita colar dados de planilhas e mensagens).
+- **Valores inválidos:** apenas números inteiros entre 1 e 1000 são aceitos. Ao tentar adicionar um valor inválido nos campos E ou S, o erro é exibido imediatamente no campo, sem necessidade de clicar em calcular.
+- **Colagem flexível:** ao colar valores nos campos E e S, vírgula, espaço e quebra de linha são aceitos como separadores (facilita colar dados de planilhas e mensagens). Caracteres não numéricos no início e no fim do texto (ex.: colchetes em `[1, 5, 7]`) são descartados automaticamente. Valores inválidos ou fora do intervalo são ignorados e o usuário é avisado.
 - **Ordem e sentido:** para cada passageiro, a saída deve ocorrer no mesmo momento ou depois da entrada.
+- **Momento de exibição:** as mensagens de validação do formulário (N, E e S) só aparecem após o usuário clicar em “Calcular lotação máxima”. Erros de valor individual nos chips de E e S (ex.: valor fora do intervalo) ainda são exibidos imediatamente.
 - **Mensagens (tom leigo):**
-  - “Confira o número de passageiros (N).”
-  - “A lista de entradas (E) precisa ter N números.”
-  - “A lista de saídas (S) precisa ter N números.”
+  - “Informe um número inteiro entre 1 e 1000.” (exibido imediatamente ao tentar adicionar um chip inválido)
+  - “Número de passageiros (N) obrigatório.”
+  - “A lista de entradas (E) precisa ter N números.” (quando N ainda não está preenchido)
+  - “A lista de entradas (E) precisa ter 3 números.” (exemplo quando N = 3)
+  - “A lista de saídas (S) precisa ter N números.” / “A lista de saídas (S) precisa ter 3 números.”
   - “Encontramos uma saída antes da entrada. Revise os valores.”
 
 ## Estados da interface
@@ -75,8 +78,8 @@ Esse número mostra a **capacidade mínima** que a sala precisaria suportar para
 
 ## Microcopy (rótulos e ajuda)
 - **N:** “Número de passageiros (N)”
-- **E:** “Entradas (E)” — ajuda: “Cole ou digite N números (vírgula, espaço ou uma linha por número).”
-- **S:** “Saídas (S)” — ajuda: “Cole ou digite N números (vírgula, espaço ou uma linha por número).”
+- **E:** “Entradas (E)” — ajuda: “Adicione um número por vez ou cole vários de uma vez.”
+- **S:** “Saídas (S)” — ajuda: “Adicione um número por vez ou cole vários de uma vez.”
 - **Botão:** “Calcular lotação máxima”
 - **Resultado:** “Lotação máxima: {X} pessoas”
 
@@ -84,4 +87,4 @@ Esse número mostra a **capacidade mínima** que a sala precisaria suportar para
 - Linguagem simples, sem jargões.
 - Contraste adequado para leitura do resultado.
 - Feedback imediato de erro no campo correto.
-- Tecla Enter pode acionar o cálculo quando o foco estiver no formulário.
+- Tecla Enter ou vírgula confirmam cada número adicionado nos campos E e S. Perder o foco no campo também confirma o valor pendente. Digitar qualquer caractere não numérico (ex.: espaço) também registra o chip imediatamente.
