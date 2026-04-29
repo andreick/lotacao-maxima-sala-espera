@@ -1,0 +1,128 @@
+openapi: 3.0.3
+info:
+  title: Lotação Máxima - Sala de Espera API
+  version: v1
+  description: >-
+    API REST para cálculo da lotação máxima simultânea em salas de espera,
+    a partir dos horários de entrada (E) e saída (S) dos passageiros.
+servers:
+  - url: http://localhost:8080
+paths:
+  /api/lotacao-maxima:
+    post:
+      tags:
+        - Lotação
+      operationId: calcularLotacaoMaxima
+      summary: Calcula a lotação máxima simultânea
+      description: >-
+        Recebe N passageiros e suas listas de entrada (E) e saída (S) e retorna
+        o número máximo de passageiros simultâneos na sala. Se alguém entra no
+        mesmo instante em que outro sai, conta apenas 1 pessoa naquele instante.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LotacaoMaximaRequest'
+            examples:
+              exemplo1:
+                summary: Exemplo com lotação máxima 3
+                value:
+                  n: 3
+                  e: [1, 5, 7]
+                  s: [9, 13, 12]
+              exemplo2:
+                summary: Exemplo com lotação máxima 1
+                value:
+                  n: 4
+                  e: [1, 4, 8, 10]
+                  s: [3, 8, 10, 17]
+      responses:
+        '200':
+          description: Cálculo realizado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LotacaoMaximaResponse'
+              examples:
+                ok:
+                  value:
+                    maxOcupacao: 3
+        '400':
+          description: Requisição inválida (validação de N/E/S)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              examples:
+                invalid:
+                  value:
+                    message: "Dados inválidos"
+                    details:
+                      - "n deve estar entre 1 e 100"
+                      - "e e s devem ter tamanho n"
+        '500':
+          description: Erro inesperado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+components:
+  schemas:
+    LotacaoMaximaRequest:
+      type: object
+      required: [n, e, s]
+      additionalProperties: false
+      properties:
+        n:
+          type: integer
+          minimum: 1
+          maximum: 100
+          description: Quantidade de passageiros
+          example: 3
+        e:
+          type: array
+          description: Lista de momentos de entrada (tamanho n)
+          minItems: 1
+          maxItems: 100
+          items:
+            type: integer
+            minimum: 1
+            maximum: 1000
+          example: [1, 5, 7]
+        s:
+          type: array
+          description: Lista de momentos de saída (tamanho n)
+          minItems: 1
+          maxItems: 100
+          items:
+            type: integer
+            minimum: 1
+            maximum: 1000
+          example: [9, 13, 12]
+    LotacaoMaximaResponse:
+      type: object
+      required: [maxOcupacao]
+      additionalProperties: false
+      properties:
+        maxOcupacao:
+          type: integer
+          minimum: 0
+          description: Maior número de passageiros simultâneos observados
+          example: 3
+    ApiError:
+      type: object
+      required: [message]
+      additionalProperties: false
+      properties:
+        message:
+          type: string
+          description: Mensagem resumida do erro
+          example: "Dados inválidos"
+        details:
+          type: array
+          description: Lista de detalhes do erro (quando aplicável)
+          items:
+            type: string
+          example:
+            - "e e s devem ter tamanho n"

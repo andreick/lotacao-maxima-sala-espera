@@ -45,3 +45,7 @@ Seja **N = 4**, **E = [1,4,8,10]** e **S = [3,8,10,17]**, sabemos que o número 
 `docs/system-architecture.md` - Leitura obrigatória para entender a arquitetura do sistema, os containers envolvidos e a comunicação entre eles.
 `docs/algorithm-design.md` - Leitura obrigatória para entender o algoritmo utilizado para calcular a lotação máxima, incluindo detalhes técnicos e justificativas de design.
 </project-documentation>
+
+<project-openapi>
+`backend/src/main/resources/static/openapi.yaml` - Leitura obrigatória para entender o contrato da API REST.
+</project-openapi>
