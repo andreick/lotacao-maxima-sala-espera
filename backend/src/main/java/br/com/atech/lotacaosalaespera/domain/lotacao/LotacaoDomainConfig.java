@@ -1,6 +1,5 @@
-package br.com.atech.lotacaosalaespera.shared.config;
+package br.com.atech.lotacaosalaespera.domain.lotacao;
 
-import br.com.atech.lotacaosalaespera.domain.lotacao.LotacaoMaximaCalculator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
