@@ -3,8 +3,7 @@
     "sonarqube": {
       "command": "npx",
       "args": [
-        "dotenv-cli",
-        "-e", ".env.mcp",
+        "dotenv-cli", "-e", ".env.mcp",
         "--", "docker", "run", "-i", "--rm", "--init", "--pull=always", "--network=host",
         "-e", "SONARQUBE_TOKEN",
         "-e", "SONARQUBE_URL",
