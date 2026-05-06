@@ -3,14 +3,11 @@ import {
   Component,
   Input,
   ViewChild,
-  computed,
-  inject,
 } from '@angular/core';
-import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { AbstractControl } from '@angular/forms';
 import { NumericChipInputDirective } from '../directives/numeric-chip-input.directive';
 
 @Component({
@@ -57,11 +54,6 @@ export class QuantidadeInputComponent {
     isErrorState: (control: AbstractControl | null): boolean =>
       !!(control?.invalid && this.tentouSubmeter),
   };
-
-  protected readonly deveExibirErro = computed(() => {
-    const invalido = this.controle?.invalid ?? false;
-    return invalido && this.tentouSubmeter;
-  });
 
   obterMensagemErro(): string {
     const erros = this.controle.errors;

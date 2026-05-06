@@ -4,7 +4,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +24,7 @@ public class ApiExceptionHandler {
 				.stream()
 				.map(error -> error.getField() + ": " + error.getDefaultMessage())
 				.distinct()
-				.collect(Collectors.toList());
+				.toList();
 		return buildError(HttpStatus.BAD_REQUEST, "Dados inválidos", request, details);
 	}
 

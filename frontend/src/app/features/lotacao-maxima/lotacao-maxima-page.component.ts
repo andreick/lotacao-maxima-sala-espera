@@ -100,10 +100,7 @@ export class LotacaoMaximaPageComponent {
   }
 
   deveExibirErro(campo: keyof ErrosFormulario): boolean {
-    if (!this.errosFormulario()[campo]) {
-      return false;
-    }
-    return this.tentouSubmeter();
+    return !!this.errosFormulario()[campo] && this.tentouSubmeter();
   }
 
   private validarFormulario(): ErrosFormulario {
@@ -121,8 +118,9 @@ export class LotacaoMaximaPageComponent {
     const entradas = this.entradas();
     const saidas = this.saidas();
 
+    const pluralSuffix = quantidade === 1 ? '' : 's';
     const quantidadeLabel =
-      quantidade !== null ? `${quantidade} número${quantidade === 1 ? '' : 's'}` : 'N números';
+      quantidade !== null ? `${quantidade} número${pluralSuffix}` : 'N números';
 
     if (entradas.length === 0 || (quantidade !== null && entradas.length !== quantidade)) {
       erros.temposEntrada = `A lista de entradas (E) precisa ter ${quantidadeLabel}.`;

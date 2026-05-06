@@ -152,13 +152,14 @@ export class ChipInputComponent {
     const trimmed = value.trim();
     if (!trimmed) return;
     const num = this.parseValor(trimmed);
-    if (num !== null) {
-      this.valores.update((vals) => [...vals, num]);
-      this.erroChip.set(null);
-      this.emitirMudanca();
-    } else {
+    if (num === null) {
       this.erroChip.set('Informe um número inteiro entre 1 e 1000.');
+      limparCampo();
+      return;
     }
+    this.valores.update((vals) => [...vals, num]);
+    this.erroChip.set(null);
+    this.emitirMudanca();
     limparCampo();
   }
 
